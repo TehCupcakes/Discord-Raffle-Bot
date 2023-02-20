@@ -10,6 +10,7 @@ import * as path from 'path'
  * requires the Lambda function where commands will be sent.
  */
 export interface DiscordBotProps {
+  apiName: string;
   commandsLambdaFunction: Function;
 }
 
@@ -33,7 +34,7 @@ export class DiscordBot extends Construct {
       handler: 'handler',
       environment: {
         COMMAND_LAMBDA_ARN: props.commandsLambdaFunction.functionArn,
-        DISCORD_PUBLIC_KEY: this.node.tryGetContext('discordBotPublicKey'),
+        DISCORD_APPLICATION_PUBLIC_KEY: this.node.tryGetContext('discordAppPublicKey'),
       },
       timeout: Duration.seconds(10),
     })
@@ -41,6 +42,7 @@ export class DiscordBot extends Construct {
 
     // Create our API Gateway
     const discordBotApi = new RestApi(this, 'DiscordBotApi', {
+      restApiName: props.apiName,
       defaultCorsPreflightOptions: {
         allowOrigins: Cors.ALL_ORIGINS,
       },

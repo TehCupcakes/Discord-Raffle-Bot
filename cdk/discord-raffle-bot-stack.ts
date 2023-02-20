@@ -14,7 +14,7 @@ export class DiscordRaffleBotStack extends Stack {
     const lambdaEnv: FunctionOptions['environment'] = {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       DISCORD_APPLICATION_ID: this.node.tryGetContext('discordAppId'),
-      DISCORD_PUBLIC_KEY: this.node.tryGetContext('discordBotPublicKey'),
+      DISCORD_APPLICATION_PUBLIC_KEY: this.node.tryGetContext('discordAppPublicKey'),
       DISCORD_BOT_TOKEN: 'TODO', // Don't reveal this in CFN. Update the lambda after deploy
     }
 
@@ -28,6 +28,7 @@ export class DiscordRaffleBotStack extends Stack {
 
     // Handles creating the API gateway, sending responses to Discord, and invokes the commands lambda
     new DiscordBot(this, 'DiscordBot', {
+      apiName: 'discord-raffle-bot-api',
       commandsLambdaFunction: discordCommandsLambda,
     })
   }

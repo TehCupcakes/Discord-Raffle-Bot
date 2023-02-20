@@ -53,7 +53,7 @@ export async function verifyEvent(event: DiscordEventRequest): Promise<boolean> 
     const isVerified = sign.detached.verify(
       Buffer.from(event.timestamp + JSON.stringify(event.jsonBody)),
       Buffer.from(event.signature, 'hex'),
-      Buffer.from(process.env.DISCORD_PUBLIC_KEY ?? '', 'hex'),
+      Buffer.from(process.env.DISCORD_APPLICATION_PUBLIC_KEY ?? '', 'hex'),
     )
     console.log('Returning verification results...')
     return isVerified
